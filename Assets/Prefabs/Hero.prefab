@@ -216,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 8374748909745851764}
   animator: {fileID: 5669605419270900047}
-  JumpForce: 700
+  JumpForce: 8500
   AccelerationSpeed: 10
 --- !u!54 &8374748909745851764
 Rigidbody:

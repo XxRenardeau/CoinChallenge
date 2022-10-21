@@ -97,7 +97,7 @@ public class CharacterController : MonoBehaviour
             float Delta = Input.mousePosition.x - MousePosX;
             MousePosX = Input.mousePosition.x;
 
-            Debug.Log(Delta);
+            //Debug.Log(Delta);
 
 
             Turn(Delta * 5000 * Time.deltaTime);
@@ -108,3 +108,4 @@ public class CharacterController : MonoBehaviour
         }
     }
 }
+//physic.spherecast 
