@@ -7,12 +7,16 @@ public class CharacterController : MonoBehaviour
     public Rigidbody rigidbody;
     public Animator animator;
     public float JumpForce = 1;
+    bool isGrounded = true;
+    public Collider sol;
+
 
     public float AccelerationSpeed = 1;
     void Start()
     {
+        Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Confined;
-        
+
 
     }
 
@@ -20,7 +24,8 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         CheckInput();
-        Cursor.visible = false;
+
+        //OnTriggerEnter();
     }
     void CheckInput() //sers a gerer les input utilisateurs via des commandes
     {
@@ -70,12 +75,12 @@ public class CharacterController : MonoBehaviour
     }
     void MoveJump()
     {
-        /*animator.SetBool("IsWalking", true);
-        Vector3 Velocity = rigidbody.velocity;
-        Velocity += transform.up * JumpForce * Time.deltaTime;
-        rigidbody.velocity = Velocity;*/
-        rigidbody.AddForce(Vector3.up * JumpForce);
-        animator.SetBool("IsJumping", true);
+        if (isGrounded)
+        {
+            rigidbody.AddForce(Vector3.up * JumpForce);
+            animator.SetBool("IsJumping", true);
+            //isGrounded = false;
+        }
 
     }
     void Tapper()
@@ -88,6 +93,12 @@ public class CharacterController : MonoBehaviour
         transform.Rotate(new Vector3(0, Direction * Time.deltaTime, 0));
 
     }
+    /*void OnTriggerEnter()
+    {
+       if (!sol.CompareTag("Ground")){isGrounded = true; Debug.Log("JE TOUCHE LE SOL");}
+       else {isGrounded = false; Debug.Log("CA MARSH PA");}
+        
+    }*/
     IEnumerator MousePanCorout()
     {
         float MousePosX = Input.mousePosition.x;

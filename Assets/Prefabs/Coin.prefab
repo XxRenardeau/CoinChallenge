@@ -47,6 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinType: 0
+  prefabListe:
+  - {fileID: 2842633725566588513, guid: c0c1ba0a6d8f5a6439b0a81cd42eb449, type: 3}
+  - {fileID: 7428805474221241287, guid: 9dc6fad60d0edb4498387f2496c0ba0b, type: 3}
+  - {fileID: 2979354307143381323, guid: 04dbaf580918d4b42a04d0f5c629154a, type: 3}
 --- !u!135 &2403045299056352861
 SphereCollider:
   m_ObjectHideFlags: 0
