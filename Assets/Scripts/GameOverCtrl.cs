@@ -2,63 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameOverCtrl : MonoBehaviour
 {
+    public static GameOverCtrl instance;
     public bool IsGameOver = false;
-    // Start is called before the first frame update
-    void Start()
+    public delegate void OnGameOverDel();
+    public OnGameOverDel onGameOverDel;
+
+    void Awake()
     {
 
+        instance = this;
+    }
+    void Start()
+    {
     }
 
     // Update is called once per frame
     void Update()
     {
-        TimeGameOver();
+
         //Debug.Log(TimeController.ControlTemps.isTimeRunOut);
-    }
-    public void OnGameOver()
-    {
-        if (IsGameOver)
-        {
-            gameObject.SetActive(true);
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                transform.GetChild(i).gameObject.SetActive(true);
-                Debug.Log("boucle");
-            } //PROBLEME DE BOUCLE INFINIE TROUVER SOLUTION
-            Debug.Log("TEST DE LA FONCTION");
-            Cursor.visible = true;
-        }
-         
-
-
-    }
-    public void TimeGameOver()
-    {
-        if (TimeController.ControlTemps.isTimeRunOut)
-        {
-            IsGameOver = true;
-            OnGameOver();
-        }
     }
     public void GameOverRestart()
     {
+        SceneManager.LoadScene("SampleScene");
     }
     public void Quit()
     {
         Application.Quit();
     }
+    public static void SetGameOver(){
+        if(instance.IsGameOver) return;
+        instance.IsGameOver = true;
+         instance.gameObject.SetActive(true);
+            for (int i = 0; i < instance.transform.childCount; i++)
+            {
+                instance.transform.GetChild(i).gameObject.SetActive(true);
+                
+            }
+            Cursor.visible = true;
+          if (instance.onGameOverDel != null) instance.onGameOverDel();
 
-    public Collider col;
 
-    void OnTriggerEnter(Collider col)
-    {
-        if (!col.CompareTag("Player")) return;
-        Debug.Log("collision avec" + col.gameObject.name);
-        IsGameOver = true;
-        OnGameOver();
+
+
     }
+
 }
 

@@ -9,31 +9,32 @@ public class TimeController : MonoBehaviour
     public float tempsrestant = 300;
     public TextMeshProUGUI tempsTXT;
     public bool isTimeRunOut;
-    void Awake(){
+    public System.Action OnTimeRunOut;
+    void Awake()
+    {
         ControlTemps = this;
     }
     void Start()
     {
+        StartCoroutine(ChronoCorout());
 
     }
-
-    // Update is called once per frame
-    void Update()
+    IEnumerator ChronoCorout()
     {
-        Temps();
-        if (tempsrestant<=0){ Debug.Log("TEMPS ECOULE");isTimeRunOut = true;}      
-
-    }
-    public void Temps()
-    {
-        float minutes = Mathf.FloorToInt(tempsrestant / 60);
-        float secondes = Mathf.FloorToInt(tempsrestant % 60);
-        if (tempsrestant >= 0)
+        while (tempsrestant >= 0)
         {
-            tempsrestant -= Time.deltaTime;
-            tempsTXT.text = "Temps restant : " + minutes +" : " + secondes;
+            float minutes = Mathf.FloorToInt(tempsrestant / 60);
+            float secondes = Mathf.FloorToInt(tempsrestant % 60);
+            if (tempsrestant >= 0)
+            {
+                tempsrestant -= Time.deltaTime;
+                tempsTXT.text = "Temps restant : " + minutes + " : " + secondes;
 
+            }
+            yield return null;
         }
+        Debug.Log("TEMPS ECOULE"); 
+        GameOverCtrl.SetGameOver();
     }
 
 }

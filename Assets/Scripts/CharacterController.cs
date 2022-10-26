@@ -7,13 +7,25 @@ public class CharacterController : MonoBehaviour
     public Rigidbody rigidbody;
     public Animator animator;
     public float JumpForce = 1;
-    bool isGrounded = true;
-    public Collider sol;
+    public bool isCameraPaning;
+    float MousePosX;
+    bool isGrounded
+    {
+        get
+        {
+            return groundDetection.isGrounded;
+        }
+    }
+    public GroundDetection groundDetection;
+    //public Collider sol;
 
 
     public float AccelerationSpeed = 1;
     void Start()
     {
+        MousePosX = Input.mousePosition.x;
+        StartCoroutine(CheckInputCorout());
+        
         Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Confined;
 
@@ -21,16 +33,17 @@ public class CharacterController : MonoBehaviour
     }
 
 
-    void Update()
-    {
-        CheckInput();
-
-        //OnTriggerEnter();
+    IEnumerator CheckInputCorout(){
+        while(!GameOverCtrl.instance.IsGameOver){
+            CheckInput();
+            animator.SetBool("IsJumping", !isGrounded);
+            yield return null;            
+        }
     }
     void CheckInput() //sers a gerer les input utilisateurs via des commandes
     {
+        MousePan();
         if (Input.GetKey(KeyCode.Z)) { MoveForward(); }
-        if (Input.GetMouseButtonDown(0)) { StartCoroutine(MousePanCorout()); }
         if (Input.GetKey(KeyCode.D)) { MoveRight(); }
         if (Input.GetKey(KeyCode.S)) { MoveBack(); }
         if (Input.GetKey(KeyCode.Q)) { MoveLeft(); }
@@ -78,8 +91,7 @@ public class CharacterController : MonoBehaviour
         if (isGrounded)
         {
             rigidbody.AddForce(Vector3.up * JumpForce);
-            animator.SetBool("IsJumping", true);
-            //isGrounded = false;
+            
         }
 
     }
@@ -99,24 +111,14 @@ public class CharacterController : MonoBehaviour
        else {isGrounded = false; Debug.Log("CA MARSH PA");}
         
     }*/
-    IEnumerator MousePanCorout()
+    void MousePan()
     {
-        float MousePosX = Input.mousePosition.x;
-
-        while (Input.GetMouseButton(0))
-        {
-            float Delta = Input.mousePosition.x - MousePosX;
-            MousePosX = Input.mousePosition.x;
-
-            //Debug.Log(Delta);
-
-
-            Turn(Delta * 5000 * Time.deltaTime);
-
-            yield return null;
-
-
-        }
+        isCameraPaning = true;
+        
+        float Delta = Input.mousePosition.x - MousePosX;
+        MousePosX = Input.mousePosition.x;
+        Turn(Delta * 5000 * Time.deltaTime);
+        isCameraPaning = false;
     }
 }
 //physic.spherecast 
