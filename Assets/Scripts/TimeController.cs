@@ -5,7 +5,7 @@ using TMPro;
 
 public class TimeController : MonoBehaviour
 {
-    public static TimeController ControlTemps;
+    public TimeController ControlTemps;
     public float tempsrestant = 300;
     public TextMeshProUGUI tempsTXT;
     public bool isTimeRunOut;

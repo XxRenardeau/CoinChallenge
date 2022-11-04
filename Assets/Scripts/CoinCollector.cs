@@ -7,7 +7,10 @@ public class CoinCollector : MonoBehaviour
 {
     public static CoinCollector Instance;
     public int score = 0;
+    public int multiplicateur = 1;
+    public float tempspowerup = 0;
     public TextMeshProUGUI scoreTxt;
+
     void Awake()
     {
         Instance = this;
@@ -17,7 +20,7 @@ public class CoinCollector : MonoBehaviour
     }
     public void AddScore(int coinValue)
     {
-        score += coinValue;
+        score += (coinValue * multiplicateur);
         Debug.Log(score);
         UpdateScoreValue();
     }
@@ -26,5 +29,6 @@ public class CoinCollector : MonoBehaviour
         scoreTxt.text = "Score : " + score;
 
     }
+    
 
 }
