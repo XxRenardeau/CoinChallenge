@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 public class TittleButtons : MonoBehaviour
 {
+    public AudioSource audioSource;
     public void StartGame()
     {
         SceneManager.LoadScene("SampleScene");

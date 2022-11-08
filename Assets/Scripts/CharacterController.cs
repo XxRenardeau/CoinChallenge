@@ -13,6 +13,7 @@ public class CharacterController : MonoBehaviour
     float MousePosX;
     public float maxVitesse = 500f;
     public AudioSource audioSource;
+    public int sentivité = 0;
     bool isGrounded
     {
         get
@@ -25,23 +26,43 @@ public class CharacterController : MonoBehaviour
 
 
     public float AccelerationSpeed = 1;
+    void Awake()
+    {
+
+    }
     void Start()
     {
+
+        if (Application.systemLanguage == SystemLanguage.French) { StartCoroutine(CheckInputCoroutFR()); }
+        else
+        {
+            StartCoroutine(CheckInputCoroutUS());
+
+        }
         MousePosX = Input.mousePosition.x;
-        StartCoroutine(CheckInputCorout());
+
 
         Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Confined;
 
 
     }
 
 
-    IEnumerator CheckInputCorout()
+    IEnumerator CheckInputCoroutUS()
     {
         while (!GameOverCtrl.instance.IsGameOver)
         {
-            CheckInput();
+            CheckInputUs();
+            animator.SetBool("IsJumping", !isGrounded);
+            yield return null;
+        }
+    }
+    IEnumerator CheckInputCoroutFR()
+    {
+        while (!GameOverCtrl.instance.IsGameOver)
+        {
+            CheckInputFr();
             animator.SetBool("IsJumping", !isGrounded);
             yield return null;
         }
@@ -62,13 +83,30 @@ public class CharacterController : MonoBehaviour
             yield return null;
         }
     }
-    void CheckInput() //sers a gerer les input utilisateurs via des commandes
+    void CheckInputFr() //sers a gerer les input utilisateurs via des commandes
     {
         MousePan();
         if (Input.GetKey(KeyCode.Z)) { MoveForward(); }
         if (Input.GetKey(KeyCode.D)) { MoveRight(); }
         if (Input.GetKey(KeyCode.S)) { MoveBack(); }
         if (Input.GetKey(KeyCode.Q)) { MoveLeft(); }
+        if (Input.GetKeyDown(KeyCode.Space)) { MoveJump(); }
+        if (Input.GetMouseButtonDown(1)) { Tapper(); }
+        //if (Input.GetKey(KeyCode.X)) { MoveSprint(); }
+        if (Input.GetMouseButtonUp(1)) { animator.SetBool("IsTapping", false); }
+        if (Input.anyKey == false) { animator.SetBool("IsWalking", false); /*animator.SetBool("IsTapping", false);*/ animator.SetBool("IsJumping", false); }
+
+
+
+
+    }
+    void CheckInputUs() //sers a gerer les input utilisateurs via des commandes
+    {
+        MousePan();
+        if (Input.GetKey(KeyCode.W)) { MoveForward(); }
+        if (Input.GetKey(KeyCode.D)) { MoveRight(); }
+        if (Input.GetKey(KeyCode.S)) { MoveBack(); }
+        if (Input.GetKey(KeyCode.A)) { MoveLeft(); }
         if (Input.GetKeyDown(KeyCode.Space)) { MoveJump(); }
         if (Input.GetMouseButtonDown(1)) { Tapper(); }
         //if (Input.GetKey(KeyCode.X)) { MoveSprint(); }
@@ -179,7 +217,9 @@ public class CharacterController : MonoBehaviour
 
         float Delta = Input.mousePosition.x - MousePosX;
         MousePosX = Input.mousePosition.x;
-        Turn(Delta * 51200 * Time.deltaTime);
+        sentivité = sensitivityctrl.Instance.sentivity * 100;
+
+        Turn(Delta * sentivité * Time.deltaTime);
         isCameraPaning = false;
     }
 }
