@@ -8,10 +8,11 @@ public class CharacterController : MonoBehaviour
     public Animator animator;
     public float JumpForce = 1;
     public bool isCameraPaning;
-    public float gravite; 
+    public float gravite;
     public float maxFallSpeed = -1000;
     float MousePosX;
     public float maxVitesse = 500f;
+    public AudioSource audioSource;
     bool isGrounded
     {
         get
@@ -51,10 +52,10 @@ public class CharacterController : MonoBehaviour
         Vector3 Velocity;
         while (!isGrounded)
         {
-            Debug.Log("gravité");
+            //Debug.Log("gravité");
             Velocity = rigidbody.velocity;
-            Velocity.y -= gravite *Time.deltaTime;
-            if (Velocity.y <maxFallSpeed) Velocity.y = maxFallSpeed;
+            Velocity.y -= gravite * Time.deltaTime;
+            if (Velocity.y < maxFallSpeed) Velocity.y = maxFallSpeed;
             rigidbody.velocity = Velocity;
 
 
@@ -133,6 +134,7 @@ public class CharacterController : MonoBehaviour
         if (isGrounded)
         {
             rigidbody.AddForce(Vector3.up * JumpForce);
+            audioSource.Play();
             StartCoroutine(Gravity());
 
         }
@@ -177,7 +179,7 @@ public class CharacterController : MonoBehaviour
 
         float Delta = Input.mousePosition.x - MousePosX;
         MousePosX = Input.mousePosition.x;
-        Turn(Delta * 12500 * Time.deltaTime);
+        Turn(Delta * 51200 * Time.deltaTime);
         isCameraPaning = false;
     }
 }

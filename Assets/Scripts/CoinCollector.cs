@@ -29,6 +29,10 @@ public class CoinCollector : MonoBehaviour
         scoreTxt.text = "Score : " + score;
 
     }
+   public void AddHighscoreded(){
+        
+        BestScoreCtrl.Instance.testScore();
+    }
     
 
 }

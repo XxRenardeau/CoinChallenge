@@ -6,10 +6,12 @@ using TMPro;
 public class CoinCtlr : MonoBehaviour
 {
 
-    public enum CoinType { cuivre, argent, or};
+    public enum CoinType { cuivre, argent, or };
     public CoinType coinType;
     public List<GameObject> prefabListe;
     int multiplicateur = 1;
+    public AudioSource audioSource;
+    public Collider colette;
     public int coinValue
     {
         get
@@ -23,27 +25,34 @@ public class CoinCtlr : MonoBehaviour
             }
         }
     }
-    void Awake(){
+    void Awake()
+    {
         transform.GetChild(1).gameObject.SetActive(false);
 
     }
 
     void Start()
-    { 
+    {
         CreatePrefab(coinType);
     }
 
     void OnTriggerEnter(Collider col)
     {
         if (!col.CompareTag("Player")) return;
-        Debug.Log("collision avec" + col.gameObject.name);
+        //Debug.Log("collision avec" + col.gameObject.name);
+        audioSource.Play();
+        //Debug.Log("son piece");
         OnCollected();
 
     }
     void OnCollected()
     {
+        colette.enabled = false;
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(2).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
         CoinCollector.Instance.AddScore(coinValue * multiplicateur);
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
     GameObject GetPrefab(CoinType coinType)
     {
