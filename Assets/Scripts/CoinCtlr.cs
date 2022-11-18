@@ -12,6 +12,7 @@ public class CoinCtlr : MonoBehaviour
     int multiplicateur = 1;
     public AudioSource audioSource;
     public Collider colette;
+    public ParticleSystem particules;
     public int coinValue
     {
         get
@@ -27,7 +28,7 @@ public class CoinCtlr : MonoBehaviour
     }
     void Awake()
     {
-        transform.GetChild(1).gameObject.SetActive(false);
+        //transform.GetChild(1).gameObject.SetActive(false);
 
     }
 
@@ -41,6 +42,7 @@ public class CoinCtlr : MonoBehaviour
         if (!col.CompareTag("Player")) return;
         //Debug.Log("collision avec" + col.gameObject.name);
         audioSource.Play();
+        particules.Play();
         //Debug.Log("son piece");
         OnCollected();
 
@@ -50,7 +52,7 @@ public class CoinCtlr : MonoBehaviour
         colette.enabled = false;
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(2).gameObject.SetActive(false);
-        transform.GetChild(1).gameObject.SetActive(false);
+        //transform.GetChild(1).gameObject.SetActive(false);
         CoinCollector.Instance.AddScore(coinValue * multiplicateur);
         //gameObject.SetActive(false);
     }

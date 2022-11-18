@@ -28,7 +28,7 @@ public class TimeController : MonoBehaviour
             if (tempsrestant >= 0)
             {
                 tempsrestant -= Time.deltaTime;
-                tempsTXT.text = "Temps restant : " + minutes + " : " + secondes;
+                tempsTXT.text = "Temps restant " + minutes + ":" + secondes;
 
             }
             yield return null;

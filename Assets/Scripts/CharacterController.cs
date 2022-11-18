@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +13,7 @@ public class CharacterController : MonoBehaviour
     float MousePosX;
     public float maxVitesse = 500f;
     public AudioSource audioSource;
-    public int sentivité = 0;
+    public int sentivité = 6400;
     bool isGrounded
     {
         get
@@ -26,7 +26,7 @@ public class CharacterController : MonoBehaviour
 
 
     public float AccelerationSpeed = 1;
-    void Awake()
+    /*void Awake()
     {
 
     }
@@ -94,7 +94,7 @@ public class CharacterController : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) { Tapper(); }
         //if (Input.GetKey(KeyCode.X)) { MoveSprint(); }
         if (Input.GetMouseButtonUp(1)) { animator.SetBool("IsTapping", false); }
-        if (Input.anyKey == false) { animator.SetBool("IsWalking", false); /*animator.SetBool("IsTapping", false);*/ animator.SetBool("IsJumping", false); }
+        if (Input.anyKey == false) { animator.SetBool("IsWalking", false); animator.SetBool("IsJumping", false); }
 
 
 
@@ -111,7 +111,7 @@ public class CharacterController : MonoBehaviour
         if (Input.GetMouseButtonDown(1)) { Tapper(); }
         //if (Input.GetKey(KeyCode.X)) { MoveSprint(); }
         if (Input.GetMouseButtonUp(1)) { animator.SetBool("IsTapping", false); }
-        if (Input.anyKey == false) { animator.SetBool("IsWalking", false); /*animator.SetBool("IsTapping", false);*/ animator.SetBool("IsJumping", false); }
+        if (Input.anyKey == false) { animator.SetBool("IsWalking", false);  animator.SetBool("IsJumping", false); }
 
 
 
@@ -178,22 +178,6 @@ public class CharacterController : MonoBehaviour
         }
 
     }
-    /* void MoveSprint()
-     {
-         if (Input.GetKeyUp(KeyCode.X))
-         {
-             AccelerationSpeed = 10;
-             maxVitesse = 500;
-             animator.SetBool("IsSprinting", false);
-         }
-         if (Input.GetKeyDown(KeyCode.X))
-         {
-             AccelerationSpeed = 15;
-             maxVitesse = 650;
-             animator.SetBool("IsSprinting", true);
-         }
-
-     }*/
 
     void Tapper()
     {
@@ -204,23 +188,88 @@ public class CharacterController : MonoBehaviour
     {
         transform.Rotate(new Vector3(0, Direction * Time.deltaTime, 0));
 
-    }
-    /*void OnTriggerEnter()
-    {
-       if (!sol.CompareTag("Ground")){isGrounded = true; Debug.Log("JE TOUCHE LE SOL");}
-       else {isGrounded = false; Debug.Log("CA MARSH PA");}
-        
-    }*/
+    
+
     void MousePan()
     {
         isCameraPaning = true;
 
         float Delta = Input.mousePosition.x - MousePosX;
         MousePosX = Input.mousePosition.x;
-        sentivité = sensitivityctrl.Instance.sentivity * 100;
+        //sentivité = sensitivityctrl.Instance.sentivity * 100;
 
         Turn(Delta * sentivité * Time.deltaTime);
         isCameraPaning = false;
     }
-}
+}*/
 //physic.spherecast 
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CharacterController : MonoBehaviour
+{
+    Vector3 playerMvtInput;
+    Vector3 playerMouseInput;
+
+    [SerializeField] Rigidbody rb;
+    [SerializeField] Transform _pied;
+    [SerializeField] LayerMask _mask =8;
+
+    [SerializeField] float speed =10;
+    [SerializeField] float sensivity =3;
+    [SerializeField] float jumpforce =250;
+    [SerializeField] Animator animator;
+    public AudioSource audioSource;
+    float xRot;
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Confined;
+        Vector3 _gravity = Physics.gravity;
+        _gravity.y = -9.81f*3 ;
+        Physics.gravity = _gravity;
+    }
+
+    // Start is called before the first frame update
+    void Update()
+    {
+        playerMvtInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+        playerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+
+        MovePlayer();
+        MovePlayerCamera();
+    }
+
+    void MovePlayer()
+    {
+        Vector3 moveVector = transform.TransformDirection(playerMvtInput * speed);
+        rb.velocity = new Vector3(moveVector.x, rb.velocity.y, moveVector.z);
+
+        animator.SetBool("IsWalking", moveVector != Vector3.zero);
+
+        bool _isGrounded = IsGrounded();
+
+        animator.SetBool("IsJumping", !_isGrounded);
+
+
+        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
+        {
+            audioSource.Play();
+            rb.AddForce(Vector3.up * jumpforce, ForceMode.Impulse);
+        }
+    }
+
+    void MovePlayerCamera()
+    {
+        xRot -= playerMouseInput.y * sensivity;
+        transform.Rotate(0f, playerMouseInput.x * sensivity, 0f);
+
+    }
+
+    bool IsGrounded()
+    {
+        return Physics.Raycast(_pied.position, Vector3.down, 1, _mask);
+    }
+
+}
