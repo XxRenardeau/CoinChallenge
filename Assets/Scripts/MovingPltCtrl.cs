@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingPltCtrl : MonoBehaviour
+public class MovingPltCtrl : MonoBehaviour, ITriggerCtrl
 {
     public bool IsLooping;
     public int NmbrLoop; //0 is error
@@ -10,42 +10,51 @@ public class MovingPltCtrl : MonoBehaviour
     public float Endpointz;
     public float Endpointy;
     bool collided = false;
+    public Transform depart;
+    public Transform arrivee;
+    public Transform plateforme;
+    float elapsedTime;
+    public float speed;
+    float t = 0f;
     void FixedUpdate()
     {
         MovingPlatform();
     }
     void OnTriggerEnter(Collider col)
     {
-        if (!col.CompareTag("Player")) return;
-        Debug.Log("collision nuage avec" + col.gameObject.name);
-        collided = true;
+    }
+    void OnTriggerExit(Collider col)
+    {
+
     }
     void MovingPlatform()
     {
-        if (collided)
-        {
-            Debug.Log("test");
-            if (IsLooping)
-            {
-                if (NmbrLoop > 0)
-                {
-                    for (int i = NmbrLoop; i > 0; i--)
-                    {
-                        transform.Translate(Endpointx, Endpointy, Endpointz);
-                        transform.Translate(-Endpointx, -Endpointy, -Endpointz);
+        if (!collided) return;
+        elapsedTime += Time.deltaTime * speed;
+        float sin = Mathf.Abs(Mathf.Sin(elapsedTime));
+        plateforme.position = Vector3.Lerp(depart.position, arrivee.position, sin);
 
-                    }
-
-                }
-                else Debug.Log("veulliez mettre un nombre de boucle");
-
-            }
-            else transform.Translate(Endpointx, Endpointy, Endpointz);
-            // marche pas ? je sais pas pk
-
-
-        }
     }
 
+    public void OnTriggerCtrlEnter(Collider _col)
+    {
+        if (!_col.CompareTag("Player")) return;
+        Debug.Log("collision nuage avec" + _col.gameObject.name);
+        _col.transform.root.SetParent(plateforme);
+        collided = true;
 
+    }
+
+    public void OnTriggerCtrlStay(Collider _col)
+    {
+
+    }
+
+    public void OnTriggerCtrlExit(Collider _col)
+    {
+        if (!_col.CompareTag("Player")) return;
+        Debug.Log("je suis parti");
+        _col.transform.SetParent(null);
+
+    }
 }
