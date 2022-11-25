@@ -226,6 +226,7 @@ public class CharacterController : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
         Vector3 _gravity = Physics.gravity;
         _gravity.y = -9.81f*3 ;
         Physics.gravity = _gravity;
