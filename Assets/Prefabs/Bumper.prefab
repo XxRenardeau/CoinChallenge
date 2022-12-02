@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 449851396093047367}
-  force: 1000
+  force: 500
 --- !u!33 &9017319586254365065
 MeshFilter:
   m_ObjectHideFlags: 0

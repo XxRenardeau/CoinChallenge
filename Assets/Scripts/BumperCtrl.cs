@@ -21,7 +21,8 @@ public class BumperCtrl : MonoBehaviour
     {
         audioSource.Play();
         Rigidbody playerrigidbody = col.transform.root.GetComponent<Rigidbody>();
-        playerrigidbody.AddForce(0f, force, 0f);
+        playerrigidbody.AddForce(new Vector3(0,force,0),ForceMode.Impulse);
+        
 
     }
 
