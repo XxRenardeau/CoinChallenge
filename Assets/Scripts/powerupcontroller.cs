@@ -42,7 +42,6 @@ public class powerupcontroller : MonoBehaviour
         BgPowerup.SetActive(true);
         while (TempsMulti < TempsMax)
         {
-            Debug.Log("test corout");
             float secondes = Mathf.FloorToInt((TempsMax - TempsMulti) % 60);
             TempsMulti += Time.deltaTime;
             if (secondes != previousecond)

@@ -34,8 +34,8 @@ public class ChaseEnemy : MonoBehaviour
             postemp = Player.transform.position;
             postemp.y = transform.position.y;
             transform.LookAt(postemp);
-            Debug.Log(playerdist);
-            if (playerdist<10f){damagable.SetDamage(2);}
+            //Debug.Log(playerdist);
+            //if (playerdist<10f){damagable.SetDamage(2);}
         }
 
 

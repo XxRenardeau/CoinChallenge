@@ -12,7 +12,7 @@ public class GameOverCtrl : MonoBehaviour
     public OnGameOverDel onGameOverDel;
     public TextMeshProUGUI highscore;
     public TextMeshProUGUI currentScore;
-
+    public GameObject personage;
     void Awake()
     {
 
@@ -43,6 +43,9 @@ public class GameOverCtrl : MonoBehaviour
         instance.IsGameOver = true;
         instance.gameObject.SetActive(true);
         instance.scoreend();
+        instance.niquetoi();
+        
+
         for (int i = 0; i < instance.transform.childCount; i++)
         {
             instance.transform.GetChild(i).gameObject.SetActive(true);
@@ -57,6 +60,9 @@ public class GameOverCtrl : MonoBehaviour
 
         currentScore.text = "Score :" + CoinCollector.Instance.score;
         highscore.text = "Meilleur Score :" + BestScoreCtrl.Instance.scores[0];
+    }
+    public void niquetoi(){
+        personage.SetActive(false);
     }
 
 

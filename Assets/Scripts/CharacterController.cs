@@ -214,27 +214,33 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] Rigidbody rb;
     [SerializeField] Transform _pied;
-    [SerializeField] LayerMask _mask =8;
+    [SerializeField] LayerMask _mask = 8;
 
-    [SerializeField] float speed =10;
-    [SerializeField] float sensivity =3;
-    [SerializeField] float jumpforce =250;
+    [SerializeField] float speed = 10;
+    [SerializeField] float sensivity = 3;
+    [SerializeField] float jumpforce = 250;
     [SerializeField] Animator animator;
     public AudioSource audioSource;
     float xRot;
+    public bool playercontrol = true;
+    public int damage = 1;
+    public Transform epee;
+    public LayerMask Ennemies;
+    Coroutine attaquecorout;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
         Vector3 _gravity = Physics.gravity;
-        _gravity.y = -9.81f*3 ;
+        _gravity.y = -9.81f * 3;
         Physics.gravity = _gravity;
     }
 
     // Start is called before the first frame update
     void Update()
     {
+
         playerMvtInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
         playerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
@@ -247,11 +253,25 @@ public class CharacterController : MonoBehaviour
         Vector3 moveVector = transform.TransformDirection(playerMvtInput * speed);
         rb.velocity = new Vector3(moveVector.x, rb.velocity.y, moveVector.z);
 
-        animator.SetBool("IsWalking", moveVector != Vector3.zero);
+        animator.SetBool("IsRunning", moveVector != Vector3.zero);
 
         bool _isGrounded = IsGrounded();
 
         animator.SetBool("IsJumping", !_isGrounded);
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+           
+            if (!animator.GetBool("Attack")&&attaquecorout == null)
+            {
+                animator.SetBool("Attack", true);
+                attaquecorout = StartCoroutine(attaqueepee());
+    
+            }
+
+
+
+
+        }
 
 
         if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
@@ -259,6 +279,11 @@ public class CharacterController : MonoBehaviour
             audioSource.Play();
             rb.AddForce(Vector3.up * jumpforce, ForceMode.Impulse);
         }
+
+
+
+
+
     }
 
     void MovePlayerCamera()
@@ -272,5 +297,23 @@ public class CharacterController : MonoBehaviour
     {
         return Physics.Raycast(_pied.position, Vector3.down, 1, _mask);
     }
+    IEnumerator attaqueepee()
+    {
+        yield return new WaitForSeconds(0.15f);
+        int number = Physics.OverlapSphereNonAlloc(epee.position, 0.4f, colliders, Ennemies);
+        damagable dam;
+        for (int i = 0; i < number; i++)
+        {
+            dam = colliders[i].transform.parent.GetComponent<damagable>();
+            if(dam==null){
+                continue;
+            }
+            dam.SetDamage(damage);
+            
+        }
+        attaquecorout = null;
+
+    }
+    Collider[] colliders = new Collider[10];
 
 }

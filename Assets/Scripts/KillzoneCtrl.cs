@@ -15,6 +15,7 @@ public class KillzoneCtrl : MonoBehaviour
     {
         if (!col.CompareTag("Player")) return;
         Debug.Log("collision avec" + col.gameObject.name);
-        hero.transform.position = respawn.position;
+        GameOverCtrl.SetGameOver();
+        //hero.transform.position = respawn.position;
     }
 }
