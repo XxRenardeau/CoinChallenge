@@ -217,7 +217,15 @@ public class CharacterController : MonoBehaviour
     [SerializeField] LayerMask _mask = 8;
 
     [SerializeField] float speed = 10;
-    [SerializeField] float sensivity = 3;
+    //[SerializeField] float sensivity = 3;
+    float sensivity
+    {
+        get
+        {
+            if (sensitivityctrl.Instance != null) { return sensitivityctrl.Instance.sentivity; }
+            return 3f;
+        }
+    }
     [SerializeField] float jumpforce = 250;
     [SerializeField] Animator animator;
     public AudioSource audioSource;
@@ -230,6 +238,8 @@ public class CharacterController : MonoBehaviour
 
     private void Start()
     {
+
+
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
         Vector3 _gravity = Physics.gravity;
@@ -260,12 +270,12 @@ public class CharacterController : MonoBehaviour
         animator.SetBool("IsJumping", !_isGrounded);
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-           
-            if (!animator.GetBool("Attack")&&attaquecorout == null)
+
+            if (!animator.GetBool("Attack") && attaquecorout == null)
             {
                 animator.SetBool("Attack", true);
                 attaquecorout = StartCoroutine(attaqueepee());
-    
+
             }
 
 
@@ -305,11 +315,12 @@ public class CharacterController : MonoBehaviour
         for (int i = 0; i < number; i++)
         {
             dam = colliders[i].transform.parent.GetComponent<damagable>();
-            if(dam==null){
+            if (dam == null)
+            {
                 continue;
             }
             dam.SetDamage(damage);
-            
+
         }
         attaquecorout = null;
 

@@ -35,7 +35,7 @@ public class damagable : MonoBehaviour
         else if(ondamage!=null){
             ondamage(this); 
         }
-        Debug.Log(currentHealth);
+        //Debug.Log(currentHealth);
 
 
 

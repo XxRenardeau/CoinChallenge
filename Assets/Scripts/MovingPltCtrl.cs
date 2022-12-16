@@ -39,7 +39,7 @@ public class MovingPltCtrl : MonoBehaviour, ITriggerCtrl
     public void OnTriggerCtrlEnter(Collider _col)
     {
         if (!_col.CompareTag("Player")) return;
-        Debug.Log("collision nuage avec" + _col.gameObject.name);
+        //Debug.Log("collision nuage avec" + _col.gameObject.name);
         _col.transform.root.SetParent(plateforme);
         collided = true;
 
@@ -53,7 +53,7 @@ public class MovingPltCtrl : MonoBehaviour, ITriggerCtrl
     public void OnTriggerCtrlExit(Collider _col)
     {
         if (!_col.CompareTag("Player")) return;
-        Debug.Log("je suis parti");
+        //Debug.Log("je suis parti");
         _col.transform.SetParent(null);
 
     }

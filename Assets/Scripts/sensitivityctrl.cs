@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class sensitivityctrl : MonoBehaviour
 {
     public static sensitivityctrl Instance;
-    public TMP_InputField inputfield;
+    public Slider lautreslider;
 
-    public int sentivity;
+    public float sentivity;
     public bool result;
 
     void Awake(){
@@ -18,23 +19,9 @@ public class sensitivityctrl : MonoBehaviour
      } else {
          Object.Destroy(gameObject);
      }
+     Instance.sentivity = Instance.lautreslider.value;
     }
    public static void onchangevalue(){
-    Instance.IsNumeric();
-    if(!Instance.result){Instance.sentivity = 0;}
-    if(Instance.inputfield.text == null){Instance.sentivity = 0;}
-    else
-   // Debug.Log(Instance.sentivity);
-   // Debug.Log(Instance.inputfield.text);
-    Instance.sentivity = int.Parse(Instance.inputfield.text);
-    //Debug.Log(Instance.sentivity);
-    //Debug.Log(Instance.inputfield.text);
-
+    Instance.sentivity = Instance.lautreslider.value;
    }
-   public void IsNumeric()
-    {
-        int number;
-        result = int.TryParse(Instance.inputfield.text, out number);
-    }
-    
 }

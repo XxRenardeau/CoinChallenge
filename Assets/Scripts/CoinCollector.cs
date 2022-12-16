@@ -21,7 +21,7 @@ public class CoinCollector : MonoBehaviour
     public void AddScore(int coinValue)
     {
         score += (coinValue * multiplicateur);
-        Debug.Log(score);
+        //Debug.Log(score);
         UpdateScoreValue();
     }
     void UpdateScoreValue()

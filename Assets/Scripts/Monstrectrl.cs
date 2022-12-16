@@ -14,12 +14,15 @@ public class Monstrectrl : MonoBehaviour
         damagable.ondamage = ondamage;
     }
     public void onkill(damagable damagable){
-        Debug.Log("je suis mort");
+        gameObject.SetActive(false);
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(false);
+        //Debug.Log("je suis mort");
 
     }
     public void ondamage(damagable damagable){
         Vector3 dir = -transform.forward;
-        dir.y = 1;
+        dir.y = 2;
         rb.AddForce(dir*Knockback,ForceMode.Impulse); 
     }
 

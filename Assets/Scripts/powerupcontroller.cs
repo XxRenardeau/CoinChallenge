@@ -20,7 +20,7 @@ public class powerupcontroller : MonoBehaviour
     {
         colette.enabled = false;
         if (!col.CompareTag("Player")) return;
-        Debug.Log("collision avec" + col.gameObject.name);
+        //Debug.Log("collision avec" + col.gameObject.name);
 
         Powerup();
     }
